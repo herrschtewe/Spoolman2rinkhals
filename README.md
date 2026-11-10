@@ -8,17 +8,17 @@ A comprehensive guide for hosting **Spoolman** in an unprivileged **Proxmox VE L
 
 ```mermaid
 flowchart TD
-    subgraph Proxmox_VE["Proxmox VE (Host)"]
-        LXC["Unprivileged Debian LXC<br/>(Docker + Docker Compose)"]
-        Spoolman["Spoolman Service<br/>Port: 7912 & 80"]
+    subgraph Proxmox_VE["Proxmox VE Host"]
+        LXC["Unprivileged Debian LXC<br/>Docker & Compose"]
+        Spoolman["Spoolman Service<br/>Port 7912 & 80"]
         LXC --> Spoolman
     end
 
     subgraph Printer["Anycubic 3D Printer (Rinkhals)"]
-        Moonraker["Moonraker<br/>([spoolman] plugin)"]
-        MMU["mmu_ace module<br/>(Gate Mapping)"]
-        Klipper["Klipper Engine<br/>(Extrusion Tracking)"]
-        ACE["Anycubic ACE Pro<br/>(4 Physical Gates)"]
+        Moonraker["Moonraker<br/>spoolman plugin"]
+        MMU["mmu_ace module<br/>Gate Mapping"]
+        Klipper["Klipper Engine<br/>Extrusion Tracking"]
+        ACE["Anycubic ACE Pro<br/>4 Physical Gates"]
 
         Moonraker <--> MMU
         MMU <--> ACE
@@ -26,15 +26,15 @@ flowchart TD
     end
 
     subgraph Clients["Clients & Tools"]
-        Slicer["OrcaSlicer<br/>(T0 - T3 Tool Changes)"]
-        UI["Mainsail / Fluidd Web UI<br/>(Spool Assignment)"]
-        Phone["Android Smartphone<br/>(NFC Tags / OpenSpool)"]
+        Slicer["OrcaSlicer<br/>T0 - T3 Tool Changes"]
+        UI["Mainsail / Fluidd Web UI<br/>Spool Assignment"]
+        Phone["Android Smartphone<br/>NFC Tags & OpenSpool"]
     end
 
-    Spoolman <--"REST API / WebSockets"--> Moonraker
-    Spoolman <--"Inventory Sync"--> Phone
-    Slicer --"Upload Print"--> Moonraker
-    UI --"Control"--> Moonraker
+    Spoolman <-->|"REST API / WebSockets"| Moonraker
+    Spoolman <-->|"Inventory Sync"| Phone
+    Slicer -->|"Upload G-Code"| Moonraker
+    UI -->|"Control & Config"| Moonraker
 ```
 
 ---
